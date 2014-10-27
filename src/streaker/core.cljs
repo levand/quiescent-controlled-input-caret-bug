@@ -6,10 +6,15 @@
 
 (q/defcomponent App [cursor]
   (d/div {:className "App"}
-         (d/pre {} (.stringify js/JSON (clj->js (value cursor)) nil 2))))
+         (d/pre {} (.stringify js/JSON (clj->js (value cursor)) nil 2))
+         (let [a (-> cursor
+                     (refine :app)
+                     (refine :a))]
+           (d/input {:value (value a)
+                     :onChange #(set a (-> % (.-value) (.-target)))}))))
 
 (def initial-state {:app
-                    {:a 42}})
+                    {:a "foo"}})
 
 (let [render-pending? (atom false)
       state (atom initial-state)]
